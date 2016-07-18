@@ -193,7 +193,9 @@ function! dispatch#isolate(keep, ...) abort
   let command += a:000
   let temp = tempname()
   call writefile(command, temp)
-  return 'env -i ' . join(map(copy(keep), 'v:val."=\"$". v:val ."\" "'), '') . &shell . ' ' . temp
+  let extra_env_vars = get(g:, 'dispatch_extra_env_vars', '')
+  return 'env -i ' . join(map(copy(keep), 'v:val."=\"$". v:val ."\" "'), '')
+              \ . extra_env_vars . ' ' . &shell . ' ' . temp
 endfunction
 
 function! s:current_compiler() abort
